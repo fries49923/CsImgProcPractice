@@ -1,0 +1,368 @@
+﻿<Window x:Class="CsImgProcPractice.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CsImgProcPractice"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+        mc:Ignorable="d"
+        Title="{Binding Path=FileName, StringFormat='MainWindow[{0}]'}"
+        Height="600"
+        Width="1000"
+        WindowStartupLocation="CenterScreen"
+        Background="#FF1E1E1E">
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/Font/FontDictionary.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/Style/DarkStyle.xaml"/>
+
+            </ResourceDictionary.MergedDictionaries>
+
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <Window.DataContext>
+        <local:MainViewModel/>
+    </Window.DataContext>
+
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding Path=WindowLoadCommand}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+
+    <Grid>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="16"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0"
+                    Orientation="Horizontal"
+                    Background="#0AFFFFFF">
+
+            <Button Margin="2,5"
+                    Style="{StaticResource MenuButtonStyle}"
+                    ToolTip="Load Image"
+                    Command="{Binding Path=LoadImageCommand}">
+
+                <StackPanel>
+                    <TextBlock FontSize="30"
+                               FontFamily="{StaticResource Material}"
+                               Text="&#58356;"/>
+                </StackPanel>
+
+            </Button>
+
+            <Button Margin="2,5"
+                    Style="{StaticResource MenuButtonStyle}"
+                    ToolTip="Reload Image"
+                    Command="{Binding Path=ReloadImageCommand}">
+
+                <StackPanel>
+                    <TextBlock FontSize="30"
+                               FontFamily="{StaticResource Material}"
+                               Text="&#57410;"/>
+                </StackPanel>
+
+            </Button>
+
+            <Button Margin="2,5"
+                    Style="{StaticResource MenuButtonStyle}"
+                    ToolTip="Save Image"
+                    Command="{Binding Path=SaveImageCommand}">
+
+                <StackPanel>
+                    <TextBlock FontSize="30"
+                               FontFamily="{StaticResource Material}"
+                               Text="&#57697;"/>
+                </StackPanel>
+
+            </Button>
+
+            <Border Margin="2,5"
+                    BorderBrush="White"
+                    BorderThickness="1,0,0,0"/>
+
+            <Button Margin="2,5"
+                    Style="{StaticResource MenuButtonStyle}"
+                    ToolTip="Config"
+                    IsEnabled="False">
+
+                <StackPanel>
+                    <TextBlock FontSize="30"
+                               FontFamily="{StaticResource Material}"
+                               Text="&#59576;"/>
+                </StackPanel>
+
+            </Button>
+
+        </StackPanel>
+
+        <Grid Grid.Row="1"
+              Margin="0,10,0,0">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" MinWidth="100"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="250" MinWidth="100"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid Grid.Column="0"
+                  Margin="5,0">
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <Border Grid.Row="0"
+                        Margin="5,0"
+                        BorderBrush="White"
+                        BorderThickness="1,1,1,0">
+                    <TextBlock 
+                           Padding="5,0,0,0"
+                           Background="#AF9900FF"
+                           Foreground="White"
+                           VerticalAlignment="Center"
+                           Text="History"/>
+                </Border>
+
+                <!--History Image List-->
+                <ListBox Grid.Row="1"
+                         x:Name="lbImgs"
+                         Margin="5,0,5,2"
+                         Height="120"
+                         ItemsSource="{Binding Path=HistoryImgs}"
+                         Style="{StaticResource ListBoxStyle}"
+                         ItemContainerStyle="{StaticResource ListBoxItemStyle}">
+                    
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal"/>
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+                    
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Margin="5,2"
+                                  Width="70"
+                                  ToolTip="{Binding Path=AlgName}">
+
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+
+                                <TextBlock Grid.Row="0"
+                                           Foreground="White"
+                                           HorizontalAlignment="Center"
+                                           TextTrimming="CharacterEllipsis"
+                                           Text="{Binding Path=AlgName}"/>
+                                <Image Grid.Row="1"
+                                       Height="70"
+                                       Source="{Binding Path=Img}"/>
+                                <Grid.Resources>
+                                    <Style TargetType="{x:Type ToolTip}"
+                                           BasedOn="{StaticResource ToolTipStyle}"/>
+                                </Grid.Resources>
+                            </Grid>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                    
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="MouseDoubleClick">
+                            <i:InvokeCommandAction Command="{Binding Path=HistoryRestoreCommand}"
+                                                   CommandParameter="{Binding ElementName=lbImgs, Path=SelectedItem}"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                    
+                    <ListBox.ContextMenu>
+                        <ContextMenu Style="{StaticResource ContextMenuStyle}">
+                            <MenuItem Header="Restore"
+                                      Command="{Binding Path=HistoryRestoreCommand}"
+                                      CommandParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}},
+                                                                 Path=PlacementTarget.SelectedItem}"/>
+                            <MenuItem Header="Remove"
+                                      Command="{Binding Path=HistoryRemoveCommand}"
+                                      CommandParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}},
+                                                                 Path=PlacementTarget.SelectedItem}"/>
+                            <MenuItem Header="Remove all"
+                                      Command="{Binding Path=HistoryRemoveAllCommand}"/>
+                        </ContextMenu>
+                    </ListBox.ContextMenu>
+                </ListBox>
+
+                <!--Image Display-->
+                <Border Grid.Row="2"
+                        Margin="5,2"
+                        BorderBrush="White"
+                        BorderThickness="1">
+                    <DockPanel Background="Transparent"
+                               AllowDrop="True">
+                        <Image Source="{Binding Path=Img}">
+                            <Image.ContextMenu>
+                                <ContextMenu Style="{StaticResource ContextMenuStyle}">
+                                    <MenuItem Header="Load Image"
+                                              Command="{Binding Path=LoadImageCommand}"/>
+                                    <MenuItem Header="Save Image"
+                                              Command="{Binding Path=SaveImageCommand}"/>
+                                </ContextMenu>
+                            </Image.ContextMenu>
+                        </Image>
+
+                        <i:Interaction.Behaviors>
+                            <local:FileDropBehaviour Command="{Binding Path=DropImageFileCommand}"/>
+                        </i:Interaction.Behaviors>
+
+                    </DockPanel>
+                </Border>
+                
+            </Grid>
+
+            <GridSplitter Grid.Column="1"
+                          Width="2"
+                          HorizontalAlignment="Stretch"
+                          Style="{StaticResource GridSplitterStyle}"/>
+
+            <Border Grid.Column="2"
+                    Margin="5,0"
+                    Background="#0AFFFFFF">
+
+                <Grid Margin="3">
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="16"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0"
+                               Padding="5,0,0,0"
+                               Background="#AF9900FF"
+                               Foreground="White"
+                               VerticalAlignment="Center"
+                               Text="Algorithm"/>
+
+                    <Grid Grid.Row="1"
+                          Margin="0,5,0,0">
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="25"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="40"/>
+                        </Grid.RowDefinitions>
+
+                        <!--Search TextBox-->
+                        <TextBox Grid.Row="0"
+                                 Margin="5,2"
+                                 VerticalContentAlignment="Center"
+                                 Style="{StaticResource HintTextBoxStyle}"
+                                 Text="{Binding Path=SearchText, UpdateSourceTrigger=PropertyChanged}">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="TextChanged">
+                                    <i:InvokeCommandAction Command="{Binding Path=AlgorithmSearchCommand}"/>
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </TextBox>
+
+                        <!--Algorithm List-->
+                        <ListBox Grid.Row="1"
+                                 x:Name="lbAlgs"
+                                 Margin="5,2"
+                                 Style="{StaticResource ListBoxStyle}"
+                                 ItemContainerStyle="{StaticResource ListBoxItemStyle}"
+                                 ItemsSource="{Binding Path=Algorithms}">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="SelectionChanged">
+                                    <i:InvokeCommandAction Command="{Binding Path=AlgorithmChangedCommand}"
+                                                   CommandParameter="{Binding ElementName=lbAlgs, Path=SelectedItem}"/>
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </ListBox>
+
+                        <GridSplitter Grid.Row="2"
+                                      Margin="0,2"
+                                      Height="2" 
+                                      HorizontalAlignment="Stretch" 
+                                      VerticalAlignment="Center" 
+                                      Style="{StaticResource GridSplitterStyle}"/>
+
+                        <Border Grid.Row="3"
+                                Margin="5,2"
+                                Background="#0AFFFFFF"
+                                BorderBrush="White"
+                                BorderThickness="1">
+                            <ScrollViewer HorizontalScrollBarVisibility="Auto"
+                                          VerticalScrollBarVisibility="Auto"
+                                          Style="{StaticResource ScrollViewerStyle}">
+                                <ItemsControl Margin="5,2"
+                                              Foreground="White"
+                                              ItemsSource="{Binding Path=ParaControl}">
+                                    <ItemsControl.Resources>
+                                        <Style TargetType="GridSplitter"
+                                               BasedOn="{StaticResource GridSplitterStyle}">
+                                        </Style>
+                                        <Style TargetType="TextBox"
+                                               BasedOn="{StaticResource GeneralTextBoxStyle}">
+                                        </Style>
+                                        <Style TargetType="CheckBox"
+                                               BasedOn="{StaticResource CheckBoxStyle}">
+                                        </Style>
+                                        <Style TargetType="ComboBox"
+                                               BasedOn="{StaticResource ComboBoxStyle}">
+                                        </Style>
+                                        <Style TargetType="ComboBoxItem"
+                                               BasedOn="{StaticResource ComboBoxItemStyle}">
+                                        </Style>
+                                    </ItemsControl.Resources>
+                                </ItemsControl>
+                            </ScrollViewer>
+                        </Border>
+
+                        <Button Grid.Row="4"
+                                Margin="5,2"
+                                ToolTip="Execute Image Process"
+                                Style="{StaticResource GeneralButtonStyle}"
+                                Command="{Binding Path=ImageProcessCommand}"
+                                CommandParameter="{Binding ElementName=lbAlgs, Path=SelectedItem}">
+                            <Button.Content>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock FontSize="30"
+                                               VerticalAlignment="Center"
+                                               FontFamily="{StaticResource Material}"
+                                               Text="&#57796;"/>
+                                    <TextBlock Margin="5,0"
+                                               FontSize="20"
+                                               VerticalAlignment="Center"
+                                               Text="Execute"/>
+                                </StackPanel>
+                            </Button.Content>
+                        </Button>
+
+                    </Grid>
+
+                </Grid>
+
+            </Border>
+
+        </Grid>
+
+        <Grid Grid.Row="2"
+              Background="#FF9900FF">
+
+            <TextBlock Margin="5,2"
+                       VerticalAlignment="Center"
+                       Foreground="White"
+                       Text="{Binding Path=TactTime}"/>
+        </Grid>
+
+    </Grid>
+
+</Window>
