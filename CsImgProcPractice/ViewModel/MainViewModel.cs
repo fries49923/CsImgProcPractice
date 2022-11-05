@@ -98,6 +98,8 @@ namespace CsImgProcPractice
         public ICommand HistoryRemoveCommand { get; private set; }
 
         public ICommand HistoryRemoveAllCommand { get; private set; }
+
+        public ICommand ConfigSettingCommand { get; private set; }
         #endregion
 
         #region Variable
@@ -128,6 +130,7 @@ namespace CsImgProcPractice
             this.HistoryRestoreCommand = new RelayCommand(HistoryRestore_Execute, HistoryRestore_CanExecute);
             this.HistoryRemoveCommand = new RelayCommand(HistoryRemove_Execute, HistoryRemove_CanExecute);
             this.HistoryRemoveAllCommand = new RelayCommand((obj) => HistoryRemoveAll_Execute(), (obj) => HistoryRemoveAll_CanExecute());
+            this.ConfigSettingCommand = new RelayCommand((obj) => ConfigSetting_Execute());
 
             this.dailogFilterIndex = 1; // This index is 1-based, not 0-based.
             this.collectionView = (CollectionView)CollectionViewSource.GetDefaultView(this.Algorithms);
@@ -173,7 +176,7 @@ namespace CsImgProcPractice
             try
             {
                 OpenFileDialog dlg = new OpenFileDialog();
-                
+
                 dlg.Filter = "JPEG Image|*.jpg;*.jpeg|BMP Image|*.bmp|TIF Image|*.tif;*.tiff|PNG Image|*.png|All files|*.*";
                 dlg.FilterIndex = this.dailogFilterIndex;
 
@@ -479,6 +482,13 @@ namespace CsImgProcPractice
         {
             this.HistoryImgs.Clear();
             GC.Collect();
+        }
+
+        private void ConfigSetting_Execute()
+        {
+            ConfigWindow window = new ConfigWindow();
+            window.Owner = Application.Current.MainWindow;
+            window.ShowDialog();
         }
     }
 }

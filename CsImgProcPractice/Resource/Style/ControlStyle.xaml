@@ -6,8 +6,8 @@
     
     <!--ToolTipStyle-->
     <Style x:Key="ToolTipStyle" TargetType="{x:Type ToolTip}">
-        <Setter Property="Foreground" Value="White"/>
-        <Setter Property="Background" Value="#FF1F1F1F"/>
+        <Setter Property="Foreground" Value="{DynamicResource Element.Foreground}"/>
+        <Setter Property="Background" Value="{DynamicResource Element.Background}"/>
     </Style>
 
     <!--#endregion-->
@@ -16,17 +16,29 @@
     
     <!--GridSplitterStyle-->
     <Style x:Key="GridSplitterStyle" TargetType="{x:Type GridSplitter}">
-        <Setter Property="Background" Value="#FF9F9F9F"/>
+        <Setter Property="Background" Value="{DynamicResource GridSplitter.Background}"/>
     </Style>
 
     <!--#endregion-->
-    
+
+    <!--#region TextBlock-->
+
+    <!--TextBlockHeaderStyle-->
+    <Style x:Key="TextBlockHeaderStyle" TargetType="{x:Type TextBlock}">
+        <Setter Property="Padding" Value="5,0,0,0"/>
+        <Setter Property="Background" Value="{DynamicResource TextBlock.Background}"/>
+        <Setter Property="Foreground" Value="{DynamicResource TextBlock.Foreground}"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+
+    <!--#endregion-->
+
     <!--#region Button-->
 
     <!--BaseButtonStyle-->
     <Style x:Key="BaseButtonStyle" TargetType="{x:Type Button}">
-        <Setter Property="Background" Value="Transparent"/>
-        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="Background" Value="{DynamicResource Button.Background}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Element.Foreground}"/>
         <Setter Property="Cursor" Value="Hand"/>
 
         <Setter Property="Template">
@@ -65,13 +77,13 @@
         <Style.Triggers>
 
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Background" Value="#309900FF"/>
-                <Setter Property="BorderBrush" Value="#FF9900FF"/>
+                <Setter Property="Background" Value="{DynamicResource Button.MouseOver.Background}"/>
+                <Setter Property="BorderBrush" Value="{DynamicResource Element.MouseOver.BorderBrush}"/>
             </Trigger>
 
             <Trigger Property="IsPressed" Value="True">
-                <Setter Property="Background" Value="#509900FF"/>
-                <Setter Property="Foreground" Value="#FF9900FF"/>
+                <Setter Property="Background" Value="{DynamicResource Button.Pressed.Background}"/>
+                <Setter Property="Foreground" Value="{DynamicResource Button.Pressed.BorderBrush}"/>
             </Trigger>
             
         </Style.Triggers>
@@ -84,7 +96,7 @@
     <!--GeneralButtonStyle-->
     <Style x:Key="GeneralButtonStyle" TargetType="{x:Type Button}"
            BasedOn="{StaticResource BaseButtonStyle}">
-        <Setter Property="BorderBrush" Value="White"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource Element.BorderBrush}"/>
     </Style>
 
     <!--MenuButtonStyle-->
@@ -99,10 +111,10 @@
 
     <!--BaseTextBoxStyle-->
     <Style x:Key="BaseTextBoxStyle" TargetType="{x:Type TextBox}">
-        <Setter Property="Background" Value="#0AFFFFFF"/>
-        <Setter Property="Foreground" Value="White"/>
-        <Setter Property="BorderBrush" Value="White"/>
-        <Setter Property="CaretBrush" Value="White"/>
+        <Setter Property="Background" Value="{DynamicResource Element.Background.Medium}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Element.Foreground}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource Element.BorderBrush}"/>
+        <Setter Property="CaretBrush" Value="{DynamicResource TextBox.CaretBrush}"/>
         <Setter Property="SnapsToDevicePixels" Value="True"/>
 
         <Setter Property="Template">
@@ -119,10 +131,10 @@
 
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="BorderBrush" Value="#FF9900FF"/>
+                <Setter Property="BorderBrush" Value="{DynamicResource Element.MouseOver.BorderBrush}"/>
             </Trigger>
             <Trigger Property="IsKeyboardFocused" Value="True">
-                <Setter Property="BorderBrush" Value="#FF9900FF"/>
+                <Setter Property="BorderBrush" Value="{DynamicResource TextBox.KeyboardFocused.BorderBrush}"/>
             </Trigger>
         </Style.Triggers>
     </Style>
@@ -162,9 +174,9 @@
 
     <!--CheckBoxStyle-->
     <Style x:Key="CheckBoxStyle" TargetType="{x:Type CheckBox}">
-        <Setter Property="Background" Value="#509900FF"/>
-        <Setter Property="Foreground" Value="White"/>
-        <Setter Property="BorderBrush" Value="#FF9900FF"/>
+        <Setter Property="Background" Value="{DynamicResource CheckBox.Background}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Element.Foreground}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource CheckBox.BorderBrush}"/>
 
         <Setter Property="Template">
             <Setter.Value>
@@ -196,8 +208,8 @@
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsChecked" Value="False">
-                            <Setter TargetName="backBorder" Property="Background" Value="Transparent"/>
-                            <Setter TargetName="backBorder" Property="BorderBrush" Value="White"/>
+                            <Setter TargetName="backBorder" Property="Background" Value="{DynamicResource CheckBox.Uncheck.Background}"/>
+                            <Setter TargetName="backBorder" Property="BorderBrush" Value="{DynamicResource CheckBox.Uncheck.BorderBrush}"/>
                         </Trigger>
                         <Trigger Property="IsChecked" Value="True">
                             <Setter TargetName="frontBorder" Property="Background"
@@ -241,7 +253,7 @@
     <Style x:Key="ScrollBar.RepeatButtonStyle" TargetType="{x:Type RepeatButton}">
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="BorderBrush" Value="Transparent"/>
-        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="Foreground" Value="{DynamicResource Element.Foreground}"/>
         
         <Setter Property="Template">
             <Setter.Value>
@@ -259,10 +271,10 @@
 
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Foreground" Value="#FFC266FF"/>
+                            <Setter Property="Foreground" Value="{DynamicResource ScrollBar.RepeatButton.MouseOver.Foreground}"/>
                         </Trigger>
                         <Trigger Property="IsPressed" Value="True">
-                            <Setter Property="Foreground" Value="#FF9900FF"/>
+                            <Setter Property="Foreground" Value="{DynamicResource ScrollBar.RepeatButton.Pressed.Foreground}"/>
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
                             <Setter Property="Foreground" Value="Gray"/>
@@ -275,7 +287,7 @@
 
     <!-- ScrollBar.ThumbStyle-->
     <Style x:Key="ScrollBar.ThumbStyle" TargetType="{x:Type Thumb}">
-        <Setter Property="Background" Value="#4FFFFFFF"/>
+        <Setter Property="Background" Value="{DynamicResource ScrollBar.Thumb.Background}"/>
         
         <Setter Property="Template">
             <Setter.Value>
@@ -288,10 +300,10 @@
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Background" Value="#7FC266FF"/>
+                            <Setter Property="Background" Value="{DynamicResource ScrollBar.Thumb.MouseOver.Background}"/>
                         </Trigger>
                         <Trigger Property="IsDragging" Value="True">
-                            <Setter Property="Background" Value="#FF9900FF"/>
+                            <Setter Property="Background" Value="{DynamicResource ScrollBar.Thumb.Dragging.Background}"/>
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
                             <Setter Property="Background" Value="Gray"/>
@@ -436,9 +448,9 @@
 
     <!--ListBoxStyle-->
     <Style x:Key="ListBoxStyle" TargetType="{x:Type ListBox}">
-        <Setter Property="Background" Value="#0AFFFFFF"/>
-        <Setter Property="Foreground" Value="White"/>
-        <Setter Property="BorderBrush" Value="White"/>
+        <Setter Property="Background" Value="{DynamicResource Element.Background.Medium}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Element.Foreground}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource Element.BorderBrush}"/>
         
         <Setter Property="Template">
             <Setter.Value>
@@ -523,9 +535,9 @@
 
     <!-- ComboBox.ToggleButtonStyle-->
     <Style x:Key="ComboBox.ToggleButtonStyle" TargetType="{x:Type ToggleButton}">
-        <Setter Property="Background" Value="#FF3F3F3F"/>
-        <Setter Property="Foreground" Value="White"/>
-        <Setter Property="BorderBrush" Value="White"/>
+        <Setter Property="Background" Value="{DynamicResource Element.Background.Medium}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Element.Foreground}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource Element.BorderBrush}"/>
         <Setter Property="BorderThickness" Value="1"/>
 
         <Setter Property="Template">
@@ -553,12 +565,12 @@
         </Setter>
 
         <Style.Triggers>
-            <Trigger Property="IsMouseOver" Value="true">
-                <Setter Property="BorderBrush" Value="#FF9900FF"/>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="BorderBrush" Value="{DynamicResource Element.MouseOver.BorderBrush}"/>
             </Trigger>
             <Trigger Property="IsChecked" Value="True">
-                <Setter Property="BorderBrush" Value="#FF9900FF"/>
-                <Setter Property="Foreground" Value="#FF9900FF"/>
+                <Setter Property="BorderBrush" Value="{DynamicResource ComboBox.ToggleButton.Checked.BorderBrush}"/>
+                <Setter Property="Foreground" Value="{DynamicResource ComboBox.ToggleButton.Checked.Foreground}"/>
             </Trigger>
             <Trigger Property="IsEnabled" Value="False">
                 <Setter Property="Foreground" Value="Gray"/>
@@ -575,9 +587,9 @@
     <!-- ComboBoxStyle -->
     <Style x:Key="ComboBoxStyle" TargetType="{x:Type ComboBox}">
         <Setter Property="Margin" Value="0,2"/>
-        <Setter Property="Background" Value="#FF3F3F3F"/>
-        <Setter Property="Foreground" Value="White"/>
-        <Setter Property="BorderBrush" Value="White"/>
+        <Setter Property="Background" Value="{DynamicResource Element.Background.Medium}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Element.Foreground}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource Element.BorderBrush}"/>
         <Setter Property="MaxDropDownHeight" Value="150"/>
 
         <Setter Property="Template">
@@ -652,8 +664,8 @@
                     <ControlTemplate.Triggers>
 
                         <Trigger Property="IsHighlighted" Value="True">
-                            <Setter Property="Background" Value="#309900FF"/>
-                            <Setter Property="BorderBrush" Value="#FF9900FF"/>
+                            <Setter Property="Background" Value="{DynamicResource Item.Highlighted.Background}"/>
+                            <Setter Property="BorderBrush" Value="{DynamicResource Item.Highlighted.BorderBrush}"/>
                         </Trigger>
 
                         <Trigger Property="IsEnabled" Value="False">
@@ -671,7 +683,7 @@
 
     <!-- MenuItemStyle-->
     <Style x:Key="MenuItemStyle" TargetType="{x:Type MenuItem}">
-        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="Foreground" Value="{DynamicResource Control.Foreground}"/>
 
         <Setter Property="Template">
             <Setter.Value>
@@ -701,8 +713,8 @@
                     <ControlTemplate.Triggers>
 
                         <Trigger Property="IsHighlighted" Value="True">
-                            <Setter Property="Background" Value="#309900FF"/>
-                            <Setter Property="BorderBrush" Value="#FF9900FF"/>
+                            <Setter Property="Background" Value="{DynamicResource Item.Highlighted.Background}"/>
+                            <Setter Property="BorderBrush" Value="{DynamicResource Item.Highlighted.BorderBrush}"/>
                         </Trigger>
 
                         <Trigger Property="IsEnabled" Value="False">
@@ -716,8 +728,8 @@
 
     <!--ContextMenuStyle-->
     <Style x:Key="ContextMenuStyle" TargetType="{x:Type ContextMenu}">
-        <Setter Property="Background" Value="#FF1F1F1F"/>
-        <Setter Property="BorderBrush" Value="White"/>
+        <Setter Property="Background" Value="{DynamicResource Element.Background}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource Element.BorderBrush}"/>
         <Setter Property="SnapsToDevicePixels" Value="True"/>
 
         <Setter Property="Template">

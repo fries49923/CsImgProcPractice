@@ -1,0 +1,68 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Color x:Key="Purple_A100">#FF9900FF</Color>
+    <Color x:Key="Purple_A70">#B29900FF</Color>
+    <Color x:Key="Purple_A50">#7F9900FF</Color>
+    <Color x:Key="Purple_A30">#4C9900FF</Color>
+    <Color x:Key="Purple_A20">#339900FF</Color>
+
+    <!--Element-->
+    <SolidColorBrush x:Key="Element.Background" Color="White"/>
+    <SolidColorBrush x:Key="Element.Background.Medium" Color="White"/>
+    <SolidColorBrush x:Key="Element.Foreground" Color="Black"/>
+    <SolidColorBrush x:Key="Element.BorderBrush" Color="Black"/>
+    <SolidColorBrush x:Key="Element.MouseOver.BorderBrush" Color="{StaticResource Purple_A100}"/>
+
+    <!--Item-->
+    <SolidColorBrush x:Key="Item.Highlighted.Background" Color="{StaticResource Purple_A20}"/>
+    <SolidColorBrush x:Key="Item.Highlighted.BorderBrush" Color="{StaticResource Purple_A100}"/>
+
+    <!--Window-->
+    <SolidColorBrush x:Key="Window.Background" Color="White"/>
+
+    <!--StackPanel-->
+    <SolidColorBrush x:Key="StackPanel.Background" Color="#FFECECEC"/>
+    
+    <!--Grid-->
+    <SolidColorBrush x:Key="Grid.Footer.Background" Color="{StaticResource Purple_A100}"/>
+
+    <!--GridSplitter-->
+    <SolidColorBrush x:Key="GridSplitter.Background" Color="#FF9F9F9F"/>
+
+    <!--TextBlock-->
+    <SolidColorBrush x:Key="TextBlock.Background" Color="{StaticResource Purple_A70}"/>
+    <SolidColorBrush x:Key="TextBlock.Foreground" Color="White"/>
+
+    <!--Button-->
+    <SolidColorBrush x:Key="Button.Background" Color="Transparent"/>
+    <SolidColorBrush x:Key="Button.MouseOver.Background" Color="{StaticResource Purple_A20}"/>
+    <SolidColorBrush x:Key="Button.Pressed.Background" Color="{StaticResource Purple_A30}"/>
+    <SolidColorBrush x:Key="Button.Pressed.BorderBrush" Color="{StaticResource Purple_A100}"/>
+
+    <!--TextBox-->
+    <SolidColorBrush x:Key="TextBox.CaretBrush" Color="Black"/>
+    <SolidColorBrush x:Key="TextBox.KeyboardFocused.BorderBrush" Color="{StaticResource Purple_A100}"/>
+
+    <!--CheckBox-->
+    <SolidColorBrush x:Key="CheckBox.Background" Color="{StaticResource Purple_A30}"/>
+    <SolidColorBrush x:Key="CheckBox.BorderBrush" Color="{StaticResource Purple_A100}"/>
+    <SolidColorBrush x:Key="CheckBox.Uncheck.Background" Color="White"/>
+    <SolidColorBrush x:Key="CheckBox.Uncheck.BorderBrush" Color="Black"/>
+
+    <!--ScrollBar-->
+    <!--ScrollBar.RepeatButton-->
+    <SolidColorBrush x:Key="ScrollBar.RepeatButton.MouseOver.Foreground" Color="{StaticResource Purple_A70}"/>
+    <SolidColorBrush x:Key="ScrollBar.RepeatButton.Pressed.Foreground" Color="{StaticResource Purple_A100}"/>
+
+    <!-- ScrollBar.Thumb-->
+    <SolidColorBrush x:Key="ScrollBar.Thumb.Background" Color="Black"/>
+    <SolidColorBrush x:Key="ScrollBar.Thumb.MouseOver.Background" Color="{StaticResource Purple_A70}"/>
+    <SolidColorBrush x:Key="ScrollBar.Thumb.Dragging.Background" Color="{StaticResource Purple_A100}"/>
+
+    <!--ComboBox-->
+    <!--ComboBox.ToggleButton-->
+    <SolidColorBrush x:Key="ComboBox.ToggleButton.Checked.BorderBrush" Color="{StaticResource Purple_A100}"/>
+    <SolidColorBrush x:Key="ComboBox.ToggleButton.Checked.Foreground" Color="{StaticResource Purple_A100}"/>
+
+</ResourceDictionary>

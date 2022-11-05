@@ -10,18 +10,7 @@
         Height="600"
         Width="1000"
         WindowStartupLocation="CenterScreen"
-        Background="#FF1E1E1E">
-
-    <Window.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/Font/FontDictionary.xaml"/>
-                <ResourceDictionary Source="pack://application:,,,/Style/DarkStyle.xaml"/>
-
-            </ResourceDictionary.MergedDictionaries>
-
-        </ResourceDictionary>
-    </Window.Resources>
+        Background="{DynamicResource Window.Background}">
 
     <Window.DataContext>
         <local:MainViewModel/>
@@ -43,7 +32,7 @@
 
         <StackPanel Grid.Row="0"
                     Orientation="Horizontal"
-                    Background="#0AFFFFFF">
+                    Background="{DynamicResource StackPanel.Background}">
 
             <Button Margin="2,5"
                     Style="{StaticResource MenuButtonStyle}"
@@ -85,13 +74,13 @@
             </Button>
 
             <Border Margin="2,5"
-                    BorderBrush="White"
+                    BorderBrush="{DynamicResource Element.BorderBrush}"
                     BorderThickness="1,0,0,0"/>
 
             <Button Margin="2,5"
                     Style="{StaticResource MenuButtonStyle}"
                     ToolTip="Config"
-                    IsEnabled="False">
+                    Command="{Binding Path=ConfigSettingCommand}">
 
                 <StackPanel>
                     <TextBlock FontSize="30"
@@ -123,14 +112,10 @@
 
                 <Border Grid.Row="0"
                         Margin="5,0"
-                        BorderBrush="White"
+                        BorderBrush="{DynamicResource Element.BorderBrush}"
                         BorderThickness="1,1,1,0">
-                    <TextBlock 
-                           Padding="5,0,0,0"
-                           Background="#AF9900FF"
-                           Foreground="White"
-                           VerticalAlignment="Center"
-                           Text="History"/>
+                    <TextBlock Style="{StaticResource TextBlockHeaderStyle}"
+                               Text="History"/>
                 </Border>
 
                 <!--History Image List-->
@@ -160,7 +145,7 @@
                                 </Grid.RowDefinitions>
 
                                 <TextBlock Grid.Row="0"
-                                           Foreground="White"
+                                           Foreground="{DynamicResource Element.Foreground}"
                                            HorizontalAlignment="Center"
                                            TextTrimming="CharacterEllipsis"
                                            Text="{Binding Path=AlgName}"/>
@@ -201,7 +186,7 @@
                 <!--Image Display-->
                 <Border Grid.Row="2"
                         Margin="5,2"
-                        BorderBrush="White"
+                        BorderBrush="{DynamicResource Element.BorderBrush}"
                         BorderThickness="1">
                     <DockPanel Background="Transparent"
                                AllowDrop="True">
@@ -232,7 +217,7 @@
 
             <Border Grid.Column="2"
                     Margin="5,0"
-                    Background="#0AFFFFFF">
+                    Background="{DynamicResource Element.Background.Medium}">
 
                 <Grid Margin="3">
 
@@ -242,10 +227,7 @@
                     </Grid.RowDefinitions>
 
                     <TextBlock Grid.Row="0"
-                               Padding="5,0,0,0"
-                               Background="#AF9900FF"
-                               Foreground="White"
-                               VerticalAlignment="Center"
+                               Style="{StaticResource TextBlockHeaderStyle}"
                                Text="Algorithm"/>
 
                     <Grid Grid.Row="1"
@@ -296,14 +278,14 @@
 
                         <Border Grid.Row="3"
                                 Margin="5,2"
-                                Background="#0AFFFFFF"
-                                BorderBrush="White"
+                                Background="{DynamicResource Element.Background.Medium}"
+                                BorderBrush="{DynamicResource Element.BorderBrush}"
                                 BorderThickness="1">
                             <ScrollViewer HorizontalScrollBarVisibility="Auto"
                                           VerticalScrollBarVisibility="Auto"
                                           Style="{StaticResource ScrollViewerStyle}">
                                 <ItemsControl Margin="5,2"
-                                              Foreground="White"
+                                              Foreground="{DynamicResource Element.Foreground}"
                                               ItemsSource="{Binding Path=ParaControl}">
                                     <ItemsControl.Resources>
                                         <Style TargetType="GridSplitter"
@@ -355,11 +337,11 @@
         </Grid>
 
         <Grid Grid.Row="2"
-              Background="#FF9900FF">
+              Background="{DynamicResource Grid.Footer.Background}">
 
             <TextBlock Margin="5,2"
                        VerticalAlignment="Center"
-                       Foreground="White"
+                       Foreground="{DynamicResource TextBlock.Foreground}"
                        Text="{Binding Path=TactTime}"/>
         </Grid>
 
