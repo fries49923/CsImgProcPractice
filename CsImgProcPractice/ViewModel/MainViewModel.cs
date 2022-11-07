@@ -100,6 +100,7 @@ namespace CsImgProcPractice
         public ICommand HistoryRemoveAllCommand { get; private set; }
 
         public ICommand ConfigSettingCommand { get; private set; }
+
         #endregion
 
         #region Variable

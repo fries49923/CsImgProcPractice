@@ -28,7 +28,7 @@
     <SolidColorBrush x:Key="Grid.Footer.Background" Color="{StaticResource Purple_A100}"/>
 
     <!--GridSplitter-->
-    <SolidColorBrush x:Key="GridSplitter.Background" Color="#FF9F9F9F"/>
+    <SolidColorBrush x:Key="GridSplitter.Background" Color="#FF4D4D4D"/>
 
     <!--TextBlock-->
     <SolidColorBrush x:Key="TextBlock.Background" Color="{StaticResource Purple_A70}"/>
@@ -54,7 +54,6 @@
     <!--ScrollBar.RepeatButton-->
     <SolidColorBrush x:Key="ScrollBar.RepeatButton.MouseOver.Foreground" Color="{StaticResource Purple_A70}"/>
     <SolidColorBrush x:Key="ScrollBar.RepeatButton.Pressed.Foreground" Color="{StaticResource Purple_A100}"/>
-
     <!-- ScrollBar.Thumb-->
     <SolidColorBrush x:Key="ScrollBar.Thumb.Background" Color="Black"/>
     <SolidColorBrush x:Key="ScrollBar.Thumb.MouseOver.Background" Color="{StaticResource Purple_A70}"/>

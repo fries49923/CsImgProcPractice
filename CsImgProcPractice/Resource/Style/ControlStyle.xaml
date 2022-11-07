@@ -193,7 +193,7 @@
 
                             <Border x:Name="frontBorder" Width="18" Height="18" CornerRadius="9"
                                     VerticalAlignment="Center" HorizontalAlignment="Left"
-                                    Margin="2,0" Background="White">
+                                    Margin="2,0" Background="{TemplateBinding Foreground}">
                                 <Border.RenderTransform>
                                     <TranslateTransform/>
                                 </Border.RenderTransform>
@@ -539,6 +539,7 @@
         <Setter Property="Foreground" Value="{DynamicResource Element.Foreground}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource Element.BorderBrush}"/>
         <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
 
         <Setter Property="Template">
             <Setter.Value>
@@ -553,10 +554,12 @@
                         <Border Grid.ColumnSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                                 Width="Auto" Height="Auto" Background="{TemplateBinding Background}"
                                 BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="{TemplateBinding BorderThickness}"/>
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
                         <Border Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="Auto" Height="Auto"
                                 Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" 
-                                BorderThickness="{TemplateBinding BorderThickness}"/>
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
                         <Path Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"
                               Stroke="{TemplateBinding Foreground}" Data="M 0 0 L 3 3 L 6 0"/>
                     </Grid>
