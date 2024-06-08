@@ -1,5 +1,4 @@
 ﻿using Microsoft.Xaml.Behaviors;
-using System;
 using System.Windows;
 using System.Windows.Input;
 
@@ -51,12 +50,12 @@ namespace CsImgProcPractice
                     return;
                 }
 
-                this.FilePath = files[0];
+                FilePath = files[0];
 
-                if (this.Command != null
-                    && this.Command.CanExecute(files[0]))
+                if (Command is not null
+                    && Command.CanExecute(files[0]))
                 {
-                    this.Command.Execute(files[0]);
+                    Command.Execute(files[0]);
                 }
             }
             catch (Exception ex)

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using System.Reflection;
 
 namespace CsImgProcPractice
@@ -34,7 +32,8 @@ namespace CsImgProcPractice
             {
                 try
                 {
-                    Assembly assembly = Assembly.LoadFile(file);
+                    //Assembly assembly = Assembly.LoadFile(file);
+                    Assembly assembly = Assembly.LoadFrom(file);
                     assemblies.Add(assembly);
                 }
                 catch (Exception)

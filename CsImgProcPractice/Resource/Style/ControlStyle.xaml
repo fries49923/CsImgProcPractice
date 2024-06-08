@@ -3,7 +3,7 @@
                     xmlns:s="clr-namespace:System;assembly=mscorlib">
 
     <!--#region ToolTip-->
-    
+
     <!--ToolTipStyle-->
     <Style x:Key="ToolTipStyle" TargetType="{x:Type ToolTip}">
         <Setter Property="Foreground" Value="{DynamicResource Element.Foreground}"/>
@@ -13,7 +13,7 @@
     <!--#endregion-->
 
     <!--#region GridSplitter-->
-    
+
     <!--GridSplitterStyle-->
     <Style x:Key="GridSplitterStyle" TargetType="{x:Type GridSplitter}">
         <Setter Property="Background" Value="{DynamicResource GridSplitter.Background}"/>
@@ -85,7 +85,7 @@
                 <Setter Property="Background" Value="{DynamicResource Button.Pressed.Background}"/>
                 <Setter Property="Foreground" Value="{DynamicResource Button.Pressed.BorderBrush}"/>
             </Trigger>
-            
+
         </Style.Triggers>
 
         <Style.Resources>
@@ -148,12 +148,14 @@
     <!--HintTextBoxStyle-->
     <Style x:Key="HintTextBoxStyle" TargetType="{x:Type TextBox}"
            BasedOn="{StaticResource BaseTextBoxStyle}">
-        
+
         <Style.Resources>
             <VisualBrush x:Key="HintTextBrush" AlignmentX="Left" AlignmentY="Center" Stretch="None">
                 <VisualBrush.Visual>
+                    <!--<TextBlock Foreground="Gray"
+                               Text="Search Algorithm"/>-->
                     <TextBlock Foreground="Gray"
-                               Text="Search Algorithm"/>
+                           Text="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TextBox}}, Path=Tag}"/>
                 </VisualBrush.Visual>
             </VisualBrush>
         </Style.Resources>
@@ -246,7 +248,7 @@
     </Style>
 
     <!--#endregion-->
-    
+
     <!--#region ScrollBar-->
 
     <!-- ScrollBar.RepeatButtonStyle-->
@@ -254,7 +256,7 @@
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="BorderBrush" Value="Transparent"/>
         <Setter Property="Foreground" Value="{DynamicResource Element.Foreground}"/>
-        
+
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type RepeatButton}">
@@ -288,7 +290,7 @@
     <!-- ScrollBar.ThumbStyle-->
     <Style x:Key="ScrollBar.ThumbStyle" TargetType="{x:Type Thumb}">
         <Setter Property="Background" Value="{DynamicResource ScrollBar.Thumb.Background}"/>
-        
+
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Thumb}">
@@ -320,7 +322,7 @@
         <Setter Property="BorderBrush" Value="Transparent"/>
         <Setter Property="IsTabStop" Value="False"/>
         <Setter Property="Focusable" Value="False"/>
-        
+
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type RepeatButton}">
@@ -337,7 +339,7 @@
     <Style x:Key="ScrollBarStyle" TargetType="{x:Type ScrollBar}">
         <Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
         <Setter Property="Background" Value="Transparent"/>
-        
+
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ScrollBar}">
@@ -403,16 +405,16 @@
     <!--#endregion-->
 
     <!--#region ScrollViewer-->
-    
+
     <!-- ScrollViewerStyle -->
     <Style x:Key="ScrollViewerStyle" TargetType="{x:Type ScrollViewer}">
-        
+
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ScrollViewer}">
-                    
+
                     <Grid Background="{TemplateBinding Background}">
-                        
+
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="Auto"/>
@@ -441,7 +443,7 @@
             <Style TargetType="ScrollBar" BasedOn="{StaticResource ScrollBarStyle}"/>
         </Style.Resources>
     </Style>
-    
+
     <!--#endregion-->
 
     <!--#region ListBox-->
@@ -451,7 +453,7 @@
         <Setter Property="Background" Value="{DynamicResource Element.Background.Medium}"/>
         <Setter Property="Foreground" Value="{DynamicResource Element.Foreground}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource Element.BorderBrush}"/>
-        
+
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ListBox}">
@@ -732,6 +734,7 @@
     <!--ContextMenuStyle-->
     <Style x:Key="ContextMenuStyle" TargetType="{x:Type ContextMenu}">
         <Setter Property="Background" Value="{DynamicResource Element.Background}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Element.Foreground}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource Element.BorderBrush}"/>
         <Setter Property="SnapsToDevicePixels" Value="True"/>
 

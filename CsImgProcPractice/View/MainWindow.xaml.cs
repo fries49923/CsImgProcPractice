@@ -3,7 +3,7 @@
 namespace CsImgProcPractice
 {
     /// <summary>
-    /// MainWindow.xaml 的互動邏輯
+    /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
     {

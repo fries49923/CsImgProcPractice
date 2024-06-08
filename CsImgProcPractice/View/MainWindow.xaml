@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CsImgProcPractice"
+        xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         mc:Ignorable="d"
         Title="{Binding Path=FileName, StringFormat='MainWindow[{0}]'}"
@@ -13,7 +14,7 @@
         Background="{DynamicResource Window.Background}">
 
     <Window.DataContext>
-        <local:MainViewModel/>
+        <local:MainWindowViewModel/>
     </Window.DataContext>
 
     <i:Interaction.Triggers>
@@ -40,9 +41,9 @@
                     Command="{Binding Path=LoadImageCommand}">
 
                 <StackPanel>
-                    <TextBlock FontSize="30"
-                               FontFamily="{StaticResource Material}"
-                               Text="&#58356;"/>
+                    <md:PackIcon Width="30"
+                                 Height="30"
+                                 Kind="Image"/>
                 </StackPanel>
 
             </Button>
@@ -53,9 +54,9 @@
                     Command="{Binding Path=ReloadImageCommand}">
 
                 <StackPanel>
-                    <TextBlock FontSize="30"
-                               FontFamily="{StaticResource Material}"
-                               Text="&#57410;"/>
+                    <md:PackIcon Width="30"
+                                 Height="30"
+                                 Kind="Reload"/>
                 </StackPanel>
 
             </Button>
@@ -66,9 +67,9 @@
                     Command="{Binding Path=SaveImageCommand}">
 
                 <StackPanel>
-                    <TextBlock FontSize="30"
-                               FontFamily="{StaticResource Material}"
-                               Text="&#57697;"/>
+                    <md:PackIcon Width="30"
+                                 Height="30"
+                                 Kind="FloppyDisk"/>
                 </StackPanel>
 
             </Button>
@@ -83,9 +84,9 @@
                     Command="{Binding Path=ConfigSettingCommand}">
 
                 <StackPanel>
-                    <TextBlock FontSize="30"
-                               FontFamily="{StaticResource Material}"
-                               Text="&#59576;"/>
+                    <md:PackIcon Width="30"
+                                 Height="30"
+                                 Kind="Settings"/>
                 </StackPanel>
 
             </Button>
@@ -126,13 +127,13 @@
                          ItemsSource="{Binding Path=HistoryImgs}"
                          Style="{StaticResource ListBoxStyle}"
                          ItemContainerStyle="{StaticResource ListBoxItemStyle}">
-                    
+
                     <ListBox.ItemsPanel>
                         <ItemsPanelTemplate>
                             <StackPanel Orientation="Horizontal"/>
                         </ItemsPanelTemplate>
                     </ListBox.ItemsPanel>
-                    
+
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <Grid Margin="5,2"
@@ -159,14 +160,14 @@
                             </Grid>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
-                    
+
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="MouseDoubleClick">
                             <i:InvokeCommandAction Command="{Binding Path=HistoryRestoreCommand}"
                                                    CommandParameter="{Binding ElementName=lbImgs, Path=SelectedItem}"/>
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
-                    
+
                     <ListBox.ContextMenu>
                         <ContextMenu Style="{StaticResource ContextMenuStyle}">
                             <MenuItem Header="Restore"
@@ -207,7 +208,7 @@
 
                     </DockPanel>
                 </Border>
-                
+
             </Grid>
 
             <GridSplitter Grid.Column="1"
@@ -246,6 +247,7 @@
                                  Margin="5,2"
                                  VerticalContentAlignment="Center"
                                  Style="{StaticResource HintTextBoxStyle}"
+                                 Tag="Search Algorithm"
                                  Text="{Binding Path=SearchText, UpdateSourceTrigger=PropertyChanged}">
                             <i:Interaction.Triggers>
                                 <i:EventTrigger EventName="TextChanged">
@@ -316,10 +318,9 @@
                                 CommandParameter="{Binding ElementName=lbAlgs, Path=SelectedItem}">
                             <Button.Content>
                                 <StackPanel Orientation="Horizontal">
-                                    <TextBlock FontSize="30"
-                                               VerticalAlignment="Center"
-                                               FontFamily="{StaticResource Material}"
-                                               Text="&#57796;"/>
+                                    <md:PackIcon Width="30"
+                                                 Height="30"
+                                                 Kind="PlayCircleOutline"/>
                                     <TextBlock Margin="5,0"
                                                FontSize="20"
                                                VerticalAlignment="Center"

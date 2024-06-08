@@ -1,38 +1,36 @@
-﻿using System;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using System.Windows.Media.Imaging;
 
 namespace BaseModule
 {
-    public abstract class AlgorithmBase : INotifyPropertyChanged
+    public abstract class AlgorithmBase : ObservableObject
     {
-        protected BitmapSource srcBitmapSource;
+        protected BitmapSource? srcBitmapSource;
 
         public AlgorithmBase()
         {
-            this.srcBitmapSource = null;
+            srcBitmapSource = null;
         }
 
         public void Execute(BitmapSource srcImg, ref BitmapSource dstImg)
         {
             try
             {
-                this.srcBitmapSource = srcImg;
+                srcBitmapSource = srcImg;
 
-                this.ConvertImage();
-                this.Calculate();
-                this.RevertImage();
+                ConvertImage();
+                Calculate();
+                RevertImage();
 
-                dstImg = this.srcBitmapSource;
+                dstImg = srcBitmapSource;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw ex;
+                throw;
             }
             finally
             {
-                this.ClearData();
+                ClearData();
             }
         }
 
@@ -45,19 +43,6 @@ namespace BaseModule
         protected virtual void ClearData()
         {
 
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected void OnPropertyChanged(
-            [CallerMemberName] string propertyName = null)
-        {
-            if (propertyName == null)
-            {
-                return;
-            }
-
-            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

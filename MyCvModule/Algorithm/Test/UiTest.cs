@@ -1,17 +1,11 @@
-﻿namespace MyCvModule
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+
+namespace MyCvModule
 {
-    public class UiTest : MyCvAlgorithmBase
+    public partial class UiTest : MyCvAlgorithmBase
     {
+        [ObservableProperty]
         private int intPara;
-        public int IntPara
-        {
-            get => this.intPara;
-            set
-            {
-                this.intPara = value;
-                this.OnPropertyChanged();
-            }
-        }
 
         private double doublePara;
         public double DoublePara

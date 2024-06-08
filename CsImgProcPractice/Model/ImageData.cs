@@ -4,10 +4,10 @@ namespace CsImgProcPractice
 {
     public class ImageData
     {
-        public string AlgName
+        public string? AlgName
         { get; set; }
 
-        public BitmapSource Img
+        public BitmapSource? Img
         { get; set; }
 
     }

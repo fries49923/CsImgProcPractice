@@ -1,7 +1,6 @@
-﻿using System;
-using System.Drawing;
-using Emgu.CV;
+﻿using Emgu.CV;
 using Emgu.CV.CvEnum;
+using System.Drawing;
 
 namespace EmguCvModule
 {

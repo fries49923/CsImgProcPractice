@@ -1,6 +1,5 @@
 ﻿using Emgu.CV;
 using Emgu.CV.CvEnum;
-using System;
 
 namespace EmguCvModule
 {
@@ -45,7 +44,7 @@ namespace EmguCvModule
             {
                 CvInvoke.Threshold(this.srcMat, this.dstMat, this.threshold, 255, this.thresholdType);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new Exception($"[EmguCvModule][Binarization]{ex.Message}");
             }

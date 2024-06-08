@@ -1,7 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 
 namespace MyCvModule
 {
@@ -196,7 +193,7 @@ namespace MyCvModule
                                     // Does not handle alpha
                                     *ptr = *nPtr;
                                 }
-                                else if(tmp < stride
+                                else if (tmp < stride
                                     || len % stride >= stride - channel
                                     || len % stride < channel
                                     || tmp > bufferStride * (height - 1))

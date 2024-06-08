@@ -1,17 +1,16 @@
-﻿using System;
-using System.Windows.Media;
+﻿using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
 namespace MyCvModule
 {
     public abstract class MyCvAlgorithmBase : BaseModule.AlgorithmBase
     {
-        protected WriteableBitmap srcImg;
+        protected WriteableBitmap? srcImg;
 
         public MyCvAlgorithmBase()
             : base()
         {
-            this.srcImg = null;
+            srcImg = null;
         }
 
         protected override void ConvertImage()
@@ -19,7 +18,7 @@ namespace MyCvModule
             try
             {
                 // Check format
-                PixelFormat format = this.srcBitmapSource.Format;
+                PixelFormat format = srcBitmapSource.Format;
                 if (format != PixelFormats.Bgra32
                     && format != PixelFormats.Bgr32
                     && format != PixelFormats.Bgr24
@@ -29,7 +28,7 @@ namespace MyCvModule
                     throw new Exception($"PixelFormat {format} not support.");
                 }
 
-                this.srcImg = new WriteableBitmap(this.srcBitmapSource);
+                srcImg = new WriteableBitmap(srcBitmapSource);
             }
             catch (Exception ex)
             {
@@ -39,7 +38,7 @@ namespace MyCvModule
 
         protected override void RevertImage()
         {
-            this.srcBitmapSource = this.srcImg;
+            srcBitmapSource = srcImg;
         }
 
         protected override void ClearData()

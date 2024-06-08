@@ -23,7 +23,7 @@
 
     <!--StackPanel-->
     <SolidColorBrush x:Key="StackPanel.Background" Color="#FFECECEC"/>
-    
+
     <!--Grid-->
     <SolidColorBrush x:Key="Grid.Footer.Background" Color="{StaticResource Purple_A100}"/>
 

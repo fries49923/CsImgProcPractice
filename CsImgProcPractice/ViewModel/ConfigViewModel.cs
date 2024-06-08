@@ -1,54 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Input;
 
 namespace CsImgProcPractice
 {
-    public class ConfigViewModel : ViewModelBase
+    public partial class ConfigWindowViewModel : ObservableObject
     {
         #region Property
 
-        private AppThemes theme;
-        public AppThemes Theme
-        {
-            get => this.theme;
-
-            set
-            {
-                this.theme = value;
-                this.OnPropertyChanged();
-            }
-        }
+        [ObservableProperty]
+        private AppThemes _theme;
 
         #endregion
 
-        #region Command
-
-        public ICommand WindowLoadCommand
-        { get; private set; }
-
-        public ICommand ThemeChangeCommand
-        { get; private set; }
-
-        #endregion
-
-        public ConfigViewModel()
+        public ConfigWindowViewModel()
         {
-            this.theme = default;
-
-            this.WindowLoadCommand = new RelayCommand((obj) => WindowLoad_Execute());
-            this.ThemeChangeCommand = new RelayCommand((obj) => ThemeChange_Execute());
+            _theme = default;
         }
 
         private string GetLastThemeName()
         {
             ResourceDictionary res = Application.Current.Resources.MergedDictionaries.LastOrDefault(
-                obj => obj.Source != null && obj.Source.ToString().Contains("Theme/"));
+                obj => obj.Source is not null && obj.Source.ToString().Contains("Theme/"));
 
             if (res == null)
             {
@@ -60,22 +34,24 @@ namespace CsImgProcPractice
             return themeFileName.Replace("Theme", "");
         }
 
-        private void WindowLoad_Execute()
+        [RelayCommand]
+        private void WindowLoad()
         {
-            string themeName = this.GetLastThemeName();
+            string themeName = GetLastThemeName();
 
             if (Enum.TryParse(themeName, out AppThemes th))
             {
-                this.Theme = th;
+                Theme = th;
             }
         }
 
-        private void ThemeChange_Execute()
+        [RelayCommand]
+        private void ThemeChange()
         {
             ResourceDictionary res = Application.Current.Resources.MergedDictionaries.FirstOrDefault(
-                obj => obj.Source != null && obj.Source.ToString().EndsWith($"Theme/{this.Theme}Theme.xaml"));
+                obj => obj.Source is not null && obj.Source.ToString().EndsWith($"Theme/{Theme}Theme.xaml"));
 
-            if (res == null)
+            if (res is null)
             {
                 return;
             }
