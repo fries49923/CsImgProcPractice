@@ -17,6 +17,11 @@ namespace MyCvModule
         {
             try
             {
+                if (srcBitmapSource is null)
+                {
+                    throw new Exception("srcBitmapSource is null.");
+                }
+
                 // Check format
                 PixelFormat format = srcBitmapSource.Format;
                 if (format != PixelFormats.Bgra32

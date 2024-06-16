@@ -1,62 +1,55 @@
-﻿using System.Windows;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using System.Windows;
 
 namespace MyCvModule
 {
-    public class Binarization : MyCvAlgorithmBase
+    public partial class Binarization : MyCvAlgorithmBase
     {
         #region Property
 
-        private int threshold;
+        private int _threshold;
         public int Threshold
         {
-            get => this.threshold;
+            get => _threshold;
             set
             {
-                this.threshold = value;
-                if (this.threshold > 255)
+                _threshold = value;
+                if (_threshold > 255)
                 {
-                    this.threshold = 255;
+                    _threshold = 255;
                 }
-                else if (this.threshold < 0)
+                else if (_threshold < 0)
                 {
-                    this.threshold = 0;
+                    _threshold = 0;
                 }
 
-                this.OnPropertyChanged();
+                OnPropertyChanged();
             }
         }
 
-        private ProcessType processType;
-        public ProcessType ProcessType
-        {
-            get => this.processType;
-            set
-            {
-                this.processType = value;
-                this.OnPropertyChanged();
-            }
-        }
+        [ObservableProperty]
+        private ProcessType _processType;
 
         #endregion
 
         public Binarization()
             : base()
         {
-            this.threshold = 100;
-            this.processType = ProcessType.Parallel;
+            _threshold = 100;
+            _processType = ProcessType.Parallel;
         }
 
         protected override void Calculate()
         {
             try
             {
-                if (this.processType == ProcessType.Pointer)
+                if (ProcessType is ProcessType.Pointer)
                 {
-                    this.Calculate_Pointer();
+                    Calculate_Pointer();
                 }
                 else
                 {
-                    this.Calculate_Parallel();
+                    Calculate_Parallel();
                 }
             }
             catch (Exception ex)
@@ -69,16 +62,26 @@ namespace MyCvModule
         {
             try
             {
-                int width = this.srcBitmapSource.PixelWidth;
-                int height = this.srcBitmapSource.PixelHeight;
-                int channel = (this.srcBitmapSource.Format.BitsPerPixel + 7) / 8;
+                if (srcBitmapSource is null)
+                {
+                    throw new Exception("srcBitmapSource is null");
+                }
+
+                if (srcImg is null)
+                {
+                    throw new Exception("srcImg is null");
+                }
+
+                int width = srcBitmapSource.PixelWidth;
+                int height = srcBitmapSource.PixelHeight;
+                int channel = (srcBitmapSource.Format.BitsPerPixel + 7) / 8;
                 int stride = width * channel;
                 byte[] pixel = new byte[height * stride];
 
                 // Does not handle alpha
                 int step = (channel > 3) ? 3 : channel;
 
-                this.srcImg.CopyPixels(pixel, stride, 0);
+                srcImg.CopyPixels(pixel, stride, 0);
 
                 Parallel.For(0, height, y =>
                 {
@@ -87,7 +90,7 @@ namespace MyCvModule
                         int idx = x + y * stride;
                         for (int i = 0; i < step; i++)
                         {
-                            if (pixel[idx + i] > (byte)this.threshold)
+                            if (pixel[idx + i] > (byte)Threshold)
                             {
                                 pixel[idx + i] = 255;
                             }
@@ -97,16 +100,16 @@ namespace MyCvModule
 
                 try
                 {
-                    this.srcImg.Lock();
-                    this.srcImg.WritePixels(new Int32Rect(0, 0, width, height), pixel, stride, 0);
+                    srcImg.Lock();
+                    srcImg.WritePixels(new Int32Rect(0, 0, width, height), pixel, stride, 0);
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
-                    throw ex;
+                    throw;
                 }
                 finally
                 {
-                    this.srcImg.Unlock();
+                    srcImg.Unlock();
                 }
             }
             catch (Exception ex)
@@ -119,18 +122,28 @@ namespace MyCvModule
         {
             try
             {
-                int width = this.srcBitmapSource.PixelWidth;
-                int height = this.srcBitmapSource.PixelHeight;
-                int channel = (this.srcBitmapSource.Format.BitsPerPixel + 7) / 8;
-                int bufferStride = this.srcImg.BackBufferStride;
+                if (srcBitmapSource is null)
+                {
+                    throw new Exception("srcBitmapSource is null");
+                }
+
+                if (srcImg is null)
+                {
+                    throw new Exception("srcImg is null");
+                }
+
+                int width = srcBitmapSource.PixelWidth;
+                int height = srcBitmapSource.PixelHeight;
+                int channel = (srcBitmapSource.Format.BitsPerPixel + 7) / 8;
+                int bufferStride = srcImg.BackBufferStride;
 
                 try
                 {
-                    this.srcImg.Lock();
+                    srcImg.Lock();
 
                     unsafe
                     {
-                        byte* ptr = (byte*)this.srcImg.BackBuffer.ToPointer();
+                        byte* ptr = (byte*)srcImg.BackBuffer.ToPointer();
                         byte* ptrStart = ptr;
                         byte* ptrEnd = ptr + bufferStride * height;
                         while (ptr != ptrEnd)
@@ -143,7 +156,7 @@ namespace MyCvModule
                                 continue;
                             }
 
-                            if (*ptr > (byte)this.threshold)
+                            if (*ptr > (byte)Threshold)
                             {
                                 *ptr = 255;
                             }
@@ -152,15 +165,15 @@ namespace MyCvModule
                         }
                     }
 
-                    this.srcImg.AddDirtyRect(new Int32Rect(0, 0, width, height));
+                    srcImg.AddDirtyRect(new Int32Rect(0, 0, width, height));
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
-                    throw ex;
+                    throw;
                 }
                 finally
                 {
-                    this.srcImg.Unlock();
+                    srcImg.Unlock();
                 }
             }
             catch (Exception ex)

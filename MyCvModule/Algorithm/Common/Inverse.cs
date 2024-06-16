@@ -1,41 +1,34 @@
-﻿using System.Windows;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using System.Windows;
 
 namespace MyCvModule
 {
-    public class Inverse : MyCvAlgorithmBase
+    public partial class Inverse : MyCvAlgorithmBase
     {
         #region Property
 
-        private ProcessType processType;
-        public ProcessType ProcessType
-        {
-            get => this.processType;
-            set
-            {
-                this.processType = value;
-                this.OnPropertyChanged();
-            }
-        }
+        [ObservableProperty]
+        private ProcessType _processType;
 
         #endregion
 
         public Inverse()
             : base()
         {
-            this.processType = ProcessType.Parallel;
+            _processType = ProcessType.Parallel;
         }
 
         protected override void Calculate()
         {
             try
             {
-                if (this.processType == ProcessType.Pointer)
+                if (ProcessType is ProcessType.Pointer)
                 {
-                    this.Calculate_Pointer();
+                    Calculate_Pointer();
                 }
                 else
                 {
-                    this.Calculate_Parallel();
+                    Calculate_Parallel();
                 }
             }
             catch (Exception ex)
@@ -48,16 +41,26 @@ namespace MyCvModule
         {
             try
             {
-                int width = this.srcBitmapSource.PixelWidth;
-                int height = this.srcBitmapSource.PixelHeight;
-                int channel = (this.srcBitmapSource.Format.BitsPerPixel + 7) / 8;
+                if (srcBitmapSource is null)
+                {
+                    throw new Exception("srcBitmapSource is null");
+                }
+
+                if (srcImg is null)
+                {
+                    throw new Exception("srcImg is null");
+                }
+
+                int width = srcBitmapSource.PixelWidth;
+                int height = srcBitmapSource.PixelHeight;
+                int channel = (srcBitmapSource.Format.BitsPerPixel + 7) / 8;
                 int stride = width * channel;
                 byte[] pixel = new byte[height * stride];
 
                 // Does not handle alpha
                 int step = (channel > 3) ? 3 : channel;
 
-                this.srcImg.CopyPixels(pixel, stride, 0);
+                srcImg.CopyPixels(pixel, stride, 0);
 
                 Parallel.For(0, height, y =>
                 {
@@ -73,16 +76,16 @@ namespace MyCvModule
 
                 try
                 {
-                    this.srcImg.Lock();
-                    this.srcImg.WritePixels(new Int32Rect(0, 0, width, height), pixel, stride, 0);
+                    srcImg.Lock();
+                    srcImg.WritePixels(new Int32Rect(0, 0, width, height), pixel, stride, 0);
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
-                    throw ex;
+                    throw;
                 }
                 finally
                 {
-                    this.srcImg.Unlock();
+                    srcImg.Unlock();
                 }
             }
             catch (Exception ex)
@@ -95,18 +98,28 @@ namespace MyCvModule
         {
             try
             {
-                int width = this.srcBitmapSource.PixelWidth;
-                int height = this.srcBitmapSource.PixelHeight;
-                int channel = (this.srcBitmapSource.Format.BitsPerPixel + 7) / 8;
-                int bufferStride = this.srcImg.BackBufferStride;
+                if (srcBitmapSource is null)
+                {
+                    throw new Exception("srcBitmapSource is null");
+                }
+
+                if (srcImg is null)
+                {
+                    throw new Exception("srcImg is null");
+                }
+
+                int width = srcBitmapSource.PixelWidth;
+                int height = srcBitmapSource.PixelHeight;
+                int channel = (srcBitmapSource.Format.BitsPerPixel + 7) / 8;
+                int bufferStride = srcImg.BackBufferStride;
 
                 try
                 {
-                    this.srcImg.Lock();
+                    srcImg.Lock();
 
                     unsafe
                     {
-                        byte* ptr = (byte*)this.srcImg.BackBuffer.ToPointer();
+                        byte* ptr = (byte*)srcImg.BackBuffer.ToPointer();
                         byte* ptrStart = ptr;
                         byte* ptrEnd = ptr + bufferStride * height;
 
@@ -125,15 +138,15 @@ namespace MyCvModule
                         }
                     }
 
-                    this.srcImg.AddDirtyRect(new Int32Rect(0, 0, width, height));
+                    srcImg.AddDirtyRect(new Int32Rect(0, 0, width, height));
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
-                    throw ex;
+                    throw;
                 }
                 finally
                 {
-                    this.srcImg.Unlock();
+                    srcImg.Unlock();
                 }
             }
             catch (Exception ex)

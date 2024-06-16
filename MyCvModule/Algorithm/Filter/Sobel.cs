@@ -1,54 +1,39 @@
-﻿using System.Windows;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using System.Windows;
 
 namespace MyCvModule
 {
     // TODO: How to speed up??
-    public class Sobel : MyCvAlgorithmBase
+    public partial class Sobel : MyCvAlgorithmBase
     {
         #region Property
 
-        private DirectionType directionType;
-        public DirectionType DirectionType
-        {
-            get => this.directionType;
-            set
-            {
-                this.directionType = value;
-                this.OnPropertyChanged();
-            }
-        }
+        [ObservableProperty]
+        private DirectionType _directionType;
 
-        private ProcessType processType;
-        public ProcessType ProcessType
-        {
-            get => this.processType;
-            set
-            {
-                this.processType = value;
-                this.OnPropertyChanged();
-            }
-        }
+        [ObservableProperty]
+        private ProcessType _processType;
 
         #endregion
 
         public Sobel()
             : base()
         {
-            this.directionType = DirectionType.Both;
-            this.processType = ProcessType.Parallel;
+            _directionType = DirectionType.Both;
+            _processType = ProcessType.Parallel;
         }
 
         protected override void Calculate()
         {
             try
             {
-                if (this.processType == ProcessType.Pointer)
+                if (ProcessType is ProcessType.Pointer)
                 {
-                    this.Calculate_Pointer();
+                    Calculate_Pointer();
                 }
                 else
                 {
-                    this.Calculate_Parallel();
+                    Calculate_Parallel();
                 }
             }
             catch (Exception ex)
@@ -61,13 +46,23 @@ namespace MyCvModule
         {
             try
             {
-                int width = this.srcBitmapSource.PixelWidth;
-                int height = this.srcBitmapSource.PixelHeight;
-                int channel = (this.srcBitmapSource.Format.BitsPerPixel + 7) / 8;
+                if (srcBitmapSource is null)
+                {
+                    throw new Exception("srcBitmapSource is null");
+                }
+
+                if (srcImg is null)
+                {
+                    throw new Exception("srcImg is null");
+                }
+
+                int width = srcBitmapSource.PixelWidth;
+                int height = srcBitmapSource.PixelHeight;
+                int channel = (srcBitmapSource.Format.BitsPerPixel + 7) / 8;
                 int stride = width * channel;
                 byte[] pixel = new byte[height * stride];
 
-                this.srcImg.CopyPixels(pixel, stride, 0);
+                srcImg.CopyPixels(pixel, stride, 0);
 
                 int[] gx = { -1, 0, 1, -2, 0, 2, -1, 0, 1 };
                 int[] gy = { -1, -2, -1, 0, 0, 0, 1, 2, 1 };
@@ -101,14 +96,14 @@ namespace MyCvModule
                                         int kernelIdx = (xx + 1) + (yy + 1) * 3;
                                         int sIdx = idx + i + (xx * channel) + (yy * stride);
 
-                                        if (this.directionType == DirectionType.Vertical
-                                           || this.directionType == DirectionType.Both)
+                                        if (DirectionType is DirectionType.Vertical
+                                           || DirectionType is DirectionType.Both)
                                         {
                                             sumX += gx[kernelIdx] * pixel[sIdx];
                                         }
 
-                                        if (this.directionType == DirectionType.Horizontal
-                                        || this.directionType == DirectionType.Both)
+                                        if (DirectionType is DirectionType.Horizontal
+                                        || DirectionType is DirectionType.Both)
                                         {
                                             sumY += gy[kernelIdx] * pixel[sIdx];
                                         }
@@ -129,16 +124,16 @@ namespace MyCvModule
 
                 try
                 {
-                    this.srcImg.Lock();
-                    this.srcImg.WritePixels(new Int32Rect(0, 0, width, height), newPixel, stride, 0);
+                    srcImg.Lock();
+                    srcImg.WritePixels(new Int32Rect(0, 0, width, height), newPixel, stride, 0);
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
-                    throw ex;
+                    throw;
                 }
                 finally
                 {
-                    this.srcImg.Unlock();
+                    srcImg.Unlock();
                 }
             }
             catch (Exception ex)
@@ -151,11 +146,21 @@ namespace MyCvModule
         {
             try
             {
-                int width = this.srcBitmapSource.PixelWidth;
-                int height = this.srcBitmapSource.PixelHeight;
-                int channel = (this.srcBitmapSource.Format.BitsPerPixel + 7) / 8;
+                if (srcBitmapSource is null)
+                {
+                    throw new Exception("srcBitmapSource is null");
+                }
+
+                if (srcImg is null)
+                {
+                    throw new Exception("srcImg is null");
+                }
+
+                int width = srcBitmapSource.PixelWidth;
+                int height = srcBitmapSource.PixelHeight;
+                int channel = (srcBitmapSource.Format.BitsPerPixel + 7) / 8;
                 int stride = width * channel;
-                int bufferStride = this.srcImg.BackBufferStride;
+                int bufferStride = srcImg.BackBufferStride;
 
                 int offset = 0;
                 if (stride != bufferStride)
@@ -167,15 +172,15 @@ namespace MyCvModule
                 int[] gy = { -1, -2, -1, 0, 0, 0, 1, 2, 1 };
 
                 byte[] copyPixel = new byte[height * stride];
-                this.srcImg.CopyPixels(copyPixel, stride, 0);
+                srcImg.CopyPixels(copyPixel, stride, 0);
 
                 try
                 {
-                    this.srcImg.Lock();
+                    srcImg.Lock();
 
                     unsafe
                     {
-                        byte* ptr = (byte*)this.srcImg.BackBuffer.ToPointer();
+                        byte* ptr = (byte*)srcImg.BackBuffer.ToPointer();
                         byte* ptrStart = ptr;
                         byte* ptrHead = ptr;
                         byte* ptrEnd = ptr + bufferStride * height;
@@ -213,14 +218,14 @@ namespace MyCvModule
                                             int kernelIdx = (x + 1) + (y + 1) * 3;
                                             byte* data = nPtr + (x * channel) + (y * stride);
 
-                                            if (this.directionType == DirectionType.Vertical
-                                               || this.directionType == DirectionType.Both)
+                                            if (DirectionType is DirectionType.Vertical
+                                               || DirectionType is DirectionType.Both)
                                             {
                                                 sumX += gx[kernelIdx] * *data;
                                             }
 
-                                            if (this.directionType == DirectionType.Horizontal
-                                            || this.directionType == DirectionType.Both)
+                                            if (DirectionType is DirectionType.Horizontal
+                                            || DirectionType is DirectionType.Both)
                                             {
                                                 sumY += gy[kernelIdx] * *data;
                                             }
@@ -249,15 +254,15 @@ namespace MyCvModule
                             }
                         }
                     }
-                    this.srcImg.AddDirtyRect(new Int32Rect(0, 0, width, height));
+                    srcImg.AddDirtyRect(new Int32Rect(0, 0, width, height));
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
-                    throw ex;
+                    throw;
                 }
                 finally
                 {
-                    this.srcImg.Unlock();
+                    srcImg.Unlock();
                 }
             }
             catch (Exception ex)
