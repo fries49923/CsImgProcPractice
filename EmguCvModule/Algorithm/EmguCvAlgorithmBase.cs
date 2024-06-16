@@ -4,22 +4,27 @@ namespace EmguCvModule
 {
     public abstract class EmguCvAlgorithmBase : BaseModule.AlgorithmBase
     {
-        protected Mat srcMat;
-        protected Mat dstMat;
+        protected Mat? srcMat;
+        protected Mat? dstMat;
 
         public EmguCvAlgorithmBase()
             : base()
         {
-            this.srcMat = null;
-            this.dstMat = null;
+            srcMat = null;
+            dstMat = null;
         }
 
         protected override void ConvertImage()
         {
             try
             {
-                this.srcMat = this.srcBitmapSource.ToMat();
-                this.dstMat = new Mat();
+                if (srcBitmapSource is null)
+                {
+                    throw new Exception("srcBitmapSource is null.");
+                }
+
+                srcMat = srcBitmapSource.ToMat();
+                dstMat = new Mat();
             }
             catch (Exception ex)
             {
@@ -31,7 +36,12 @@ namespace EmguCvModule
         {
             try
             {
-                this.srcBitmapSource = this.dstMat.ToBitmapSource();
+                if (dstMat is null)
+                {
+                    throw new Exception("dstMat is null.");
+                }
+
+                srcBitmapSource = dstMat.ToBitmapSource();
             }
             catch (Exception ex)
             {
@@ -41,11 +51,11 @@ namespace EmguCvModule
 
         protected override void ClearData()
         {
-            this.srcMat?.Dispose();
-            this.srcMat = null;
+            srcMat?.Dispose();
+            srcMat = null;
 
-            this.dstMat?.Dispose();
-            this.dstMat = null;
+            dstMat?.Dispose();
+            dstMat = null;
 
             base.ClearData();
         }

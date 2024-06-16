@@ -1,96 +1,52 @@
-﻿using Emgu.CV;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using Emgu.CV;
 using Emgu.CV.CvEnum;
 
 namespace EmguCvModule
 {
-    public class Sobel : EmguCvAlgorithmBase
+    public partial class Sobel : EmguCvAlgorithmBase
     {
         #region Property
 
-        private int xorder;
-        public int Xorder
-        {
-            get => this.xorder;
-            set
-            {
-                this.xorder = value;
-                this.OnPropertyChanged();
-            }
-        }
+        [ObservableProperty]
+        private int _xorder;
 
-        private int yorder;
-        public int Yorder
-        {
-            get => this.yorder;
-            set
-            {
-                this.yorder = value;
-                this.OnPropertyChanged();
-            }
-        }
+        [ObservableProperty]
+        private int _yorder;
 
-        private int ksize;
-        public int Ksize
-        {
-            get => this.ksize;
-            set
-            {
-                this.ksize = value;
-                this.OnPropertyChanged();
-            }
-        }
+        [ObservableProperty]
+        private int _ksize;
 
-        private double scale;
-        public double Scale
-        {
-            get => this.scale;
-            set
-            {
-                this.scale = value;
-                this.OnPropertyChanged();
-            }
-        }
+        [ObservableProperty]
+        private double _scale;
 
-        private double delta;
-        public double Delta
-        {
-            get => this.delta;
-            set
-            {
-                this.delta = value;
-                this.OnPropertyChanged();
-            }
-        }
+        [ObservableProperty]
+        private double _delta;
 
-        private BorderType borderType;
-        public BorderType BorderType
-        {
-            get => this.borderType;
-            set
-            {
-                this.borderType = value;
-                this.OnPropertyChanged();
-            }
-        }
+        [ObservableProperty]
+        private BorderType _borderType;
 
         #endregion
 
         public Sobel()
             : base()
         {
-            this.xorder = 1;
-            this.yorder = 0;
-            this.ksize = 3;
-            this.scale = 1.0;
-            this.delta = 0;
-            this.borderType = BorderType.Default;
+            _xorder = 1;
+            _yorder = 0;
+            _ksize = 3;
+            _scale = 1.0;
+            _delta = 0;
+            _borderType = BorderType.Default;
         }
 
         protected override void Calculate()
         {
             try
             {
-                CvInvoke.Sobel(this.srcMat, this.dstMat, DepthType.Cv8U, this.xorder, this.yorder, this.ksize, this.scale, this.delta, this.borderType);
+                CvInvoke.Sobel(
+                     srcMat, dstMat,
+                    DepthType.Cv8U, Xorder, Yorder,
+                     Ksize, Scale, Delta, BorderType);
             }
             catch (Exception ex)
             {

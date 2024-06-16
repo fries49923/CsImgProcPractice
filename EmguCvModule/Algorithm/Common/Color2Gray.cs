@@ -15,7 +15,7 @@ namespace EmguCvModule
         {
             try
             {
-                CvInvoke.CvtColor(this.srcMat, this.dstMat, ColorConversion.Bgr2Gray);
+                CvInvoke.CvtColor(srcMat, dstMat, ColorConversion.Bgr2Gray);
             }
             catch (Exception ex)
             {

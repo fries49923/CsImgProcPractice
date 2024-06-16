@@ -1,72 +1,43 @@
-﻿using Emgu.CV;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using Emgu.CV;
 using Emgu.CV.CvEnum;
 
 namespace EmguCvModule
 {
-    public class Laplacian : EmguCvAlgorithmBase
+    public partial class Laplacian : EmguCvAlgorithmBase
     {
         #region Property
 
-        private int ksize;
-        public int Ksize
-        {
-            get => this.ksize;
-            set
-            {
-                this.ksize = value;
-                this.OnPropertyChanged();
-            }
-        }
+        [ObservableProperty]
+        private int _ksize;
 
-        private double scale;
-        public double Scale
-        {
-            get => this.scale;
-            set
-            {
-                this.scale = value;
-                this.OnPropertyChanged();
-            }
-        }
+        [ObservableProperty]
+        private double _scale;
 
-        private double delta;
-        public double Delta
-        {
-            get => this.delta;
-            set
-            {
-                this.delta = value;
-                this.OnPropertyChanged();
-            }
-        }
+        [ObservableProperty]
+        private double _delta;
 
-        private BorderType borderType;
-        public BorderType BorderType
-        {
-            get => this.borderType;
-            set
-            {
-                this.borderType = value;
-                this.OnPropertyChanged();
-            }
-        }
+        [ObservableProperty]
+        private BorderType _borderType;
 
         #endregion
 
         public Laplacian()
             : base()
         {
-            this.ksize = 1;
-            this.scale = 1.0;
-            this.delta = 0.0;
-            this.borderType = BorderType.Default;
+            _ksize = 1;
+            _scale = 1.0;
+            _delta = 0.0;
+            _borderType = BorderType.Default;
         }
 
         protected override void Calculate()
         {
             try
             {
-                CvInvoke.Laplacian(this.srcMat, this.dstMat, DepthType.Default, this.ksize, this.scale, this.delta, this.borderType);
+                CvInvoke.Laplacian(
+                    srcMat, dstMat,
+                    DepthType.Default, Ksize, Scale, Delta, BorderType);
             }
             catch (Exception ex)
             {

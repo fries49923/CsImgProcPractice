@@ -4,7 +4,6 @@
 
 using Emgu.CV;
 using Emgu.CV.CvEnum;
-using System;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Media;
@@ -145,7 +144,7 @@ namespace EmguCvModule
         /// <returns>The resulting Mat</returns>
         public static Mat ToMat(this BitmapSource source)
         {
-            Mat result = new Mat();
+            var result = new Mat();
             source.ToMat(result);
             return result;
         }

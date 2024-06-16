@@ -1,36 +1,29 @@
-﻿using Emgu.CV;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using Emgu.CV;
 using Emgu.CV.CvEnum;
 
 namespace EmguCvModule
 {
-    public class Flip : EmguCvAlgorithmBase
+    public partial class Flip : EmguCvAlgorithmBase
     {
         #region Property
 
-        private FlipType flipType;
-        public FlipType FlipType
-        {
-            get => this.flipType;
-            set
-            {
-                this.flipType = value;
-                this.OnPropertyChanged();
-            }
-        }
+        [ObservableProperty]
+        private FlipType _flipType;
 
         #endregion
 
         public Flip()
             : base()
         {
-            this.flipType = FlipType.Vertical;
+            _flipType = FlipType.Vertical;
         }
 
         protected override void Calculate()
         {
             try
             {
-                CvInvoke.Flip(this.srcMat, this.dstMat, this.flipType);
+                CvInvoke.Flip(srcMat, dstMat, FlipType);
             }
             catch (Exception ex)
             {

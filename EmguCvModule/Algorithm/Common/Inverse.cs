@@ -14,7 +14,7 @@ namespace EmguCvModule
         {
             try
             {
-                CvInvoke.BitwiseNot(this.srcMat, this.dstMat);
+                CvInvoke.BitwiseNot(srcMat, dstMat);
             }
             catch (Exception ex)
             {

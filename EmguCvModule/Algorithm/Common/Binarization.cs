@@ -1,48 +1,33 @@
-﻿using Emgu.CV;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using Emgu.CV;
 using Emgu.CV.CvEnum;
 
 namespace EmguCvModule
 {
-    public class Binarization : EmguCvAlgorithmBase
+    public partial class Binarization : EmguCvAlgorithmBase
     {
         #region Property
 
-        private double threshold;
-        public double Threshold
-        {
-            get => this.threshold;
-            set
-            {
-                this.threshold = value;
-                this.OnPropertyChanged();
-            }
-        }
+        [ObservableProperty]
+        private double _threshold;
 
-        private ThresholdType thresholdType;
-        public ThresholdType ThresholdType
-        {
-            get => this.thresholdType;
-            set
-            {
-                this.thresholdType = value;
-                this.OnPropertyChanged();
-            }
-        }
+        [ObservableProperty]
+        private ThresholdType _thresholdType;
 
         #endregion
 
         public Binarization()
             : base()
         {
-            this.threshold = 100;
-            this.thresholdType = ThresholdType.Binary;
+            _threshold = 100;
+            _thresholdType = ThresholdType.Binary;
         }
 
         protected override void Calculate()
         {
             try
             {
-                CvInvoke.Threshold(this.srcMat, this.dstMat, this.threshold, 255, this.thresholdType);
+                CvInvoke.Threshold(srcMat, dstMat, Threshold, 255, ThresholdType);
             }
             catch (Exception ex)
             {
