@@ -12,20 +12,21 @@ Just WPF & Image Processing practices.
 # Development environment
 | Item | Name |
 | --- | --- |
-| OS | Windows 10 |
-| IDE | Visual Studio 2019 |
+| OS | Windows 11 |
+| IDE | Visual Studio 2022 |
 | Language | C# |
-| .net framework | 4.8 |
+| Framework | .Net 6.0 |
 | Window | WPF |
 
 <br>
 
-# Resource
-| Name | Vervion | Source |
-| --- | --- | --- |
-| EmguCV | 4.5.5.4823 | NuGet |
-| Google Material icons | 1.017 | [Link](https://github.com/google/material-design-icons) |
-| Microsoft.Xaml.Behaviors | 1.139 | NuGet |
+# NuGet Packages Used
+| Name | Vervion |
+| --- | --- |
+| CommunityToolkit.Mvvm | 8.3.2 |
+| Emgu.CV | 4.9.0.5494 |
+| MaterialDesignThemes | 5.1.0 |
+| Microsoft.Xaml.Behaviors | 1.1.39 |
 
 <br>
 
