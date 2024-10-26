@@ -4,11 +4,12 @@ namespace CsImgProcPractice
 {
     public class DerivedFinder
     {
-        private Type baseType;
+        private readonly Type baseType;
 
         public DerivedFinder(Type type)
         {
-            this.baseType = type ?? throw new ArgumentNullException("type is null");
+            baseType = type
+                ?? throw new ArgumentNullException(nameof(type));
         }
 
         /// <summary>
@@ -18,11 +19,10 @@ namespace CsImgProcPractice
         /// <returns>Array of eligible types.</returns>
         public Type[] FindType(IEnumerable<Assembly> assemblies)
         {
-            List<Type> matchTypes = new List<Type>();
-
-            foreach (Assembly assembly in assemblies)
+            var matchTypes = new List<Type>();
+            foreach (var assembly in assemblies)
             {
-                Type[] types = this.FindType(assembly);
+                var types = FindType(assembly);
                 matchTypes.AddRange(types);
             }
 
@@ -36,10 +36,11 @@ namespace CsImgProcPractice
         /// <returns>Array of eligible types.</returns>
         public Type[] FindType(Assembly assembly)
         {
-            List<Type> matchTypes = new List<Type>();
-            if (assembly == null)
+            var matchTypes = new List<Type>();
+            if (string.IsNullOrEmpty(baseType.FullName) is true
+                || assembly is null)
             {
-                matchTypes.ToArray();
+                return matchTypes.ToArray();
             }
 
             Type[] types = assembly.GetTypes();
@@ -51,13 +52,13 @@ namespace CsImgProcPractice
                     // No concrete
                     continue;
                 }
-                else if (this.baseType.IsAbstract
-                    && GetAbstractClass(type, this.baseType.FullName) != null)
+                else if (baseType.IsAbstract
+                    && GetAbstractClass(type, baseType.FullName) is not null)
                 {
                     matchTypes.Add(type);
                 }
-                else if (this.baseType.IsInterface
-                    && type.GetInterface(this.baseType.FullName) != null)
+                else if (baseType.IsInterface
+                    && type.GetInterface(baseType.FullName) is not null)
                 {
                     matchTypes.Add(type);
                 }
@@ -72,11 +73,10 @@ namespace CsImgProcPractice
         /// <returns>
         /// An object representing the abstract class with the specified name, implemented or inherited by the current Type, if found; otherwise, null.
         /// </returns>
-        public Type GetAbstractClass(Type type, string name)
+        public Type? GetAbstractClass(Type type, string name)
         {
-            Type baseType = type.BaseType;
-
-            if (baseType == null)
+            Type? baseType = type.BaseType;
+            if (baseType is null)
             {
                 return null;
             }
@@ -88,7 +88,7 @@ namespace CsImgProcPractice
             }
             else
             {
-                return this.GetAbstractClass(baseType, name);
+                return GetAbstractClass(baseType, name);
             }
         }
     }

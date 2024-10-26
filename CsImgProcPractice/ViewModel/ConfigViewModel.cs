@@ -21,15 +21,19 @@ namespace CsImgProcPractice
 
         private string GetLastThemeName()
         {
-            ResourceDictionary res = Application.Current.Resources.MergedDictionaries.LastOrDefault(
-                obj => obj.Source is not null && obj.Source.ToString().Contains("Theme/"));
+            ResourceDictionary? res =
+                Application.Current.Resources.MergedDictionaries.LastOrDefault(
+                obj => obj.Source is not null
+                    && obj.Source.ToString().Contains("Theme/"));
 
-            if (res == null)
+            if (res is null)
             {
                 return "";
             }
 
-            string themeFileName = Path.GetFileNameWithoutExtension(res.Source.ToString());
+            var themeFileName =
+                Path.GetFileNameWithoutExtension(
+                    res.Source.ToString());
 
             return themeFileName.Replace("Theme", "");
         }
@@ -48,8 +52,10 @@ namespace CsImgProcPractice
         [RelayCommand]
         private void ThemeChange()
         {
-            ResourceDictionary res = Application.Current.Resources.MergedDictionaries.FirstOrDefault(
-                obj => obj.Source is not null && obj.Source.ToString().EndsWith($"Theme/{Theme}Theme.xaml"));
+            ResourceDictionary? res =
+                Application.Current.Resources.MergedDictionaries.FirstOrDefault(
+                obj => obj.Source is not null
+                    && obj.Source.ToString().EndsWith($"Theme/{Theme}Theme.xaml"));
 
             if (res is null)
             {

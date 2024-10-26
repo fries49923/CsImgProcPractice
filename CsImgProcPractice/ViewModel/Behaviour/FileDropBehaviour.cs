@@ -28,6 +28,7 @@ namespace CsImgProcPractice
         protected override void OnAttached()
         {
             base.OnAttached();
+
             // UIElement.PreviewDragOver
             AssociatedObject.PreviewDragOver += AssociatedObject_PreviewDragOver;
             AssociatedObject.PreviewDrop += AssociatedObject_PreviewDrop;
@@ -42,9 +43,10 @@ namespace CsImgProcPractice
         {
             try
             {
-                string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+                var files =
+                    (string[])e.Data.GetData(DataFormats.FileDrop);
 
-                if (files == null
+                if (files is null
                     || files.Length == 0)
                 {
                     return;
@@ -77,6 +79,7 @@ namespace CsImgProcPractice
         {
             AssociatedObject.PreviewDragOver -= AssociatedObject_PreviewDragOver;
             AssociatedObject.PreviewDrop -= AssociatedObject_PreviewDrop;
+
             base.OnDetaching();
         }
     }

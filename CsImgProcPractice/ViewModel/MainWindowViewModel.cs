@@ -50,6 +50,7 @@ namespace CsImgProcPractice
             _searchText = "";
             _tactTime = "";
             _img = null;
+
             Algorithms = new();
             ParaControl = new();
             HistoryImgs = new();
@@ -79,8 +80,11 @@ namespace CsImgProcPractice
                 foreach (Type type in pluginTypes)
                 {
                     var plugin =
-                        (BaseModule.AlgorithmBase)Activator.CreateInstance(type);
-                    string typeName = plugin.ToString();
+                        (BaseModule.AlgorithmBase?)Activator.CreateInstance(type);
+
+                    if (plugin is null)
+                        continue;
+
                     Algorithms.Add(plugin);
                 }
             }
@@ -106,7 +110,7 @@ namespace CsImgProcPractice
                 };
 
                 bool? result = dlg.ShowDialog();
-                if (result == true)
+                if (result is true)
                 {
                     FileName = dlg.FileName;
                     dailogFilterIndex = dlg.FilterIndex;
@@ -125,7 +129,7 @@ namespace CsImgProcPractice
 
         private bool CanReloadImage()
         {
-            return !string.IsNullOrEmpty(FileName);
+            return string.IsNullOrEmpty(FileName) is false;
         }
 
         [RelayCommand(CanExecute = nameof(CanReloadImage))]
@@ -150,7 +154,7 @@ namespace CsImgProcPractice
         {
             try
             {
-                if (!File.Exists(fileName))
+                if (File.Exists(fileName) is false)
                 {
                     return;
                 }
@@ -184,7 +188,7 @@ namespace CsImgProcPractice
         {
             try
             {
-                if (!File.Exists(FileName))
+                if (File.Exists(FileName) is false)
                 {
                     return;
                 }
@@ -200,6 +204,8 @@ namespace CsImgProcPractice
                 }
 
                 Img = bitmap;
+
+                ImageProcessCommand.NotifyCanExecuteChanged();
             }
             catch (Exception ex)
             {
@@ -209,7 +215,9 @@ namespace CsImgProcPractice
 
         private bool CanAlgorithmChanged(object obj)
         {
-            return obj != null;
+            ImageProcessCommand.NotifyCanExecuteChanged();
+
+            return obj is not null;
         }
 
         [RelayCommand(CanExecute = nameof(CanAlgorithmChanged))]
@@ -219,9 +227,9 @@ namespace CsImgProcPractice
             {
                 ParaControl.Clear();
 
-                PropControlCreator p = new PropControlCreator(obj);
+                var p = new PropControlCreator(obj);
                 var ctl = p.GetPropControls();
-                if (ctl == null)
+                if (ctl is null)
                 {
                     return;
                 }
@@ -238,25 +246,18 @@ namespace CsImgProcPractice
             }
         }
 
-        // TODO: Fix
-        //private bool CanImageProcess(object obj)
-        //{
-        //    return obj != null && _img != null;
-        //}
+        private bool CanImageProcess(object obj)
+        {
+            return obj is not null && Img is not null;
+        }
 
-        //[RelayCommand(CanExecute = nameof(CanImageProcess))]
-        [RelayCommand]
+        [RelayCommand(CanExecute = nameof(CanImageProcess))]
         private void ImageProcess(object obj)
         {
             try
             {
-                if(obj is null || _img is null)
-                {
-                    return;
-                }
-                
-                BitmapSource image = Img;
-                BaseModule.AlgorithmBase algorithm = (BaseModule.AlgorithmBase)obj;
+               BitmapSource image = Img;
+               var algorithm = (BaseModule.AlgorithmBase)obj;
 
                 int startTime = Environment.TickCount;
                 algorithm.Execute(image, ref image);
@@ -265,6 +266,8 @@ namespace CsImgProcPractice
 
                 HistoryImgs.Add(
                     new ImageData { AlgName = obj.ToString(), Img = image });
+
+                UpdateCanExecuteChanged();
             }
             catch (Exception ex)
             {
@@ -276,10 +279,9 @@ namespace CsImgProcPractice
             }
         }
 
-        // TODO: Fix
         private bool CanSaveImage()
         {
-            return _img != null;
+            return Img is not null;
         }
 
         [RelayCommand(CanExecute = nameof(CanSaveImage))]
@@ -287,46 +289,32 @@ namespace CsImgProcPractice
         {
             try
             {
-                SaveFileDialog dlg = new SaveFileDialog();
-                dlg.Filter = "JPEG Image|*.jpg;*.jpeg|BMP Image|*.bmp|TIF Image|*.tif;*.tiff|PNG Image|*.png";
-                dlg.FileName = $"Imgae_{DateTime.Now:yyyyMMddHHmmss}";
+                var dlg = new SaveFileDialog
+                {
+                    Filter = "JPEG Image|*.jpg;*.jpeg|BMP Image|*.bmp|TIF Image|*.tif;*.tiff|PNG Image|*.png",
+                    FileName = $"Imgae_{DateTime.Now:yyyyMMddHHmmss}"
+                };
 
                 bool? result = dlg.ShowDialog();
-                if (result != true)
+                if (result is false)
                 {
                     return;
                 }
 
                 string fileName = dlg.FileName;
                 string ext = Path.GetExtension(fileName);
-                BitmapEncoder encoder;
-                switch (ext.ToLower())
+
+                BitmapEncoder encoder = ext.ToLower() switch
                 {
-                    case ".jpg":
-                    case ".jpeg":
-                        encoder = new JpegBitmapEncoder();
-                        break;
+                    ".jpg" or ".jpeg" => new JpegBitmapEncoder(),
+                    ".tif" or ".tiff" => new TiffBitmapEncoder(),
+                    ".png" => new PngBitmapEncoder(),
+                    _ => new BmpBitmapEncoder(),
+                };
 
-                    case ".tif":
-                    case ".tiff":
-                        encoder = new TiffBitmapEncoder();
-                        break;
-
-                    case ".png":
-                        encoder = new PngBitmapEncoder();
-                        break;
-
-                    case ".bmp":
-                    default:
-                        encoder = new BmpBitmapEncoder();
-                        break;
-                }
-
-                encoder.Frames.Add(BitmapFrame.Create(_img));
-                using (FileStream fileStream = new FileStream(fileName, FileMode.Create))
-                {
-                    encoder.Save(fileStream);
-                }
+                encoder.Frames.Add(BitmapFrame.Create(Img));
+                using var fileStream = new FileStream(fileName, FileMode.Create);
+                encoder.Save(fileStream);
             }
             catch (Exception ex)
             {
@@ -344,10 +332,15 @@ namespace CsImgProcPractice
             {
                 return true;
             }
-            else
+
+            if (obj is null)
             {
-                return obj.ToString().IndexOf(SearchText, StringComparison.OrdinalIgnoreCase) >= 0;
+                return true;
             }
+
+            var str = $"{obj}";
+
+            return str.Contains(SearchText, StringComparison.OrdinalIgnoreCase);
         }
 
         [RelayCommand]
@@ -367,46 +360,62 @@ namespace CsImgProcPractice
             }
         }
 
-        // TODO: Check
         private bool CanHistoryRestore(object obj)
         {
-            return obj != null;
+            return obj is not null;
         }
 
-        [RelayCommand(CanExecute = nameof(CanHistoryRestore))]
+        //[RelayCommand(CanExecute = nameof(CanHistoryRestore))]
+        [RelayCommand]
         private void HistoryRestore(object obj)
         {
-            ImageData data = obj as ImageData;
+            if (obj is not ImageData data)
+            {
+                return;
+            }
 
             Img = data.Img;
+            UpdateCanExecuteChanged();
         }
 
-        // TODO: Check
         private bool CanHistoryRemove(object obj)
         {
-            return obj != null;
+            return obj is not null;
         }
 
-        [RelayCommand(CanExecute = nameof(CanHistoryRemove))]
+        //[RelayCommand(CanExecute = nameof(CanHistoryRemove))]
+        [RelayCommand]
         private void HistoryRemove(object obj)
         {
-            ImageData data = obj as ImageData;
+            if (obj is not ImageData data)
+            {
+                return;
+            }
 
             HistoryImgs.Remove(data);
+            UpdateCanExecuteChanged();
             GC.Collect();
         }
 
-        // TODO: Check
         private bool CanHistoryRemoveAll()
         {
-            return HistoryImgs != null && HistoryImgs.Count > 0;
+            return HistoryImgs is not null && HistoryImgs.Count > 0;
         }
 
-        [RelayCommand(CanExecute = nameof(CanHistoryRemoveAll))]
+        //[RelayCommand(CanExecute = nameof(CanHistoryRemoveAll))]
+        [RelayCommand]
         private void HistoryRemoveAll()
         {
             HistoryImgs.Clear();
+            UpdateCanExecuteChanged();
             GC.Collect();
+        }
+
+        private void UpdateCanExecuteChanged()
+        {
+            //HistoryRestoreCommand.NotifyCanExecuteChanged();
+            //HistoryRemoveCommand.NotifyCanExecuteChanged();
+            //HistoryRemoveAllCommand.NotifyCanExecuteChanged();
         }
 
         [RelayCommand]

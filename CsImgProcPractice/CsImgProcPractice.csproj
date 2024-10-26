@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BaseModule\BaseModule.csproj" />
+    <ProjectReference Include="..\EmguCvModule\EmguCvModule.csproj" />
   </ItemGroup>
 
 </Project>
