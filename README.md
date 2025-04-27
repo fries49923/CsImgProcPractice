@@ -1,15 +1,15 @@
 # About
 Just WPF & Image Processing practices.
 
-## Practice
-* MVVM
+# Practice
+* MVVM (Use CommunityToolkit.Mvvm Attribute)
 * Control Template
 * Template Pattern
 * Dynamic load module
 
 <br>
 
-# Development environment
+# Development Environment
 | Item | Name |
 | --- | --- |
 | OS | Windows 11 |
